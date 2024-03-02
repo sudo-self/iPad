@@ -9,6 +9,7 @@
 
     let selected = null;
     let loading = null;
+    let isDarkMode = true; // Default to dark mode
 
     const ASSETS = ''; // No need for ASSETS constant if images are in the public folder
 
@@ -25,11 +26,15 @@
 
         img.src = `/${image.id}.png`; // Adjusted to load PNG images from the public folder
     };
+
+    const toggleDarkMode = () => {
+        isDarkMode = !isDarkMode;
+    };
 </script>
 
-<div class="container">
+<div class="container" class:dark-mode={isDarkMode}>
     <div class="phone">
-        <h1>ipad</h1>
+        <h1>JJ</h1>
 
         <div class="grid">
             {#each images as image}
@@ -46,6 +51,10 @@
             {/each}
         </div>
 
+        <button class="toggle-mode" on:click={toggleDarkMode}>
+            {isDarkMode ? "Color Mode" : "jj-junior.vercel.app"}
+        </button>
+
         {#if selected}
             {#await selected then d}
                 <div class="photo" in:receive|global={{ key: d.id }} out:send|global={{ key: d.id }}>
@@ -53,10 +62,9 @@
                     <img alt={d.alt} src={`/${d.id}.png`} on:click={() => (selected = null)} /> <!-- Adjusted to load PNG images from the public folder -->
 
                     <p class="credit">
-                        <a target="_blank" rel="noreferrer" href="https://www.flickr.com/photos/{d.path}"
-                            >via Flickr</a
+                        <a target="_blank" rel="noreferrer" href="https://jessejesse.com"
+                            >JesseJesse.com</a
                         >
-                        &ndash;
                         <a target="_blank" rel="noreferrer" href={d.license.url}>{d.license.name}</a>
                     </p>
                 </div>
@@ -105,13 +113,19 @@
     }
 
     button {
-        width: 100%;
-        height: 100%;
-        color: white;
-        font-size: 5vmin;
-        border: none;
-        margin: 0;
-        will-change: transform;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #1a1a1a;
+        cursor: pointer;
+        transition: border-color 0.25s;
+    }
+
+    .toggle-mode {
+        margin-top: 1em;
     }
 
     .photo,
@@ -151,5 +165,42 @@
     .credit a,
     .credit a:visited {
         color: white;
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+        color: #213547;
+        background-color: #ffffff;
+    }
+    .dark-mode a:hover {
+        color: #747bff;
+    }
+   .dark-mode button {
+        background-color: #1a1a1a; /* Adjusted background color */
+        color: #ffffff; /* Adjusted text color */
+        
+    }
+    
+    @media only screen and (max-width: 600px) {
+        /* Mobile styles */
+        :root {
+            /* Light mode */
+            color: #213547;
+            background-color: #ffffff;
+        }
+
+        a:hover {
+            color: #747bff;
+        }
+
+        button {
+            background-color: #f9f9f9;
+        }
+
+        /* Dark mode */
+        .dark-mode button {
+            background-color: #1a1a1a; /* Adjusted background color */
+            color: #ffffff; /* Adjusted text color */
+        }
     }
 </style>
